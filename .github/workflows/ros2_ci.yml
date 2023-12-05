@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
         # distro: [galactic, foxy]
-	distro: [foxy]
+        distro: [foxy]
     steps:
       - uses: actions/checkout@v3
         with:
