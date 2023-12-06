@@ -28,7 +28,6 @@ jobs:
           required-ros-distributions: ${{ matrix.distro }}
       - uses: ros-tooling/action-ros-ci@0.3.5
         with:
-          # package-name: my_package
           target-ros2-distro: ${{ matrix.distro }}
           vcs-repo-file-url: ${{ inputs.vcs_url }}
           colcon-defaults: |

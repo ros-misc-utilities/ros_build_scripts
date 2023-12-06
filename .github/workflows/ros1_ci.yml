@@ -1,0 +1,32 @@
+name: Build repo on ROS1 matrix
+
+on:
+  workflow_call:
+    inputs:
+      repo:
+        required: true
+        type: string
+      vcs_url:
+        required: false
+        type: string
+
+jobs:
+  build_on_focal:
+    name: build_focal_${{ matrix.distro }}
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [noetic]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: src/${{ inputs.repo }}
+          fetch-depth: 0
+      - uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: ${{ matrix.distro }}
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          target-ros1-distro: ${{ matrix.distro }}
+          vcs-repo-file-url: ${{ inputs.vcs_url }}
