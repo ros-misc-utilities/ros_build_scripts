@@ -39,7 +39,7 @@ jobs:
               }
             }
   build_on_noble:
-    name: build_jammy_${{ matrix.distro }}
+    name: build_noble_${{ matrix.distro }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
