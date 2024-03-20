@@ -17,7 +17,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distro: [humble, iron, rolling]
+        distro: [humble, iron]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: src/${{ inputs.repo }}
+          fetch-depth: 0
+      - uses: ros-tooling/setup-ros@0.7.1
+        with:
+          required-ros-distributions: ${{ matrix.distro }}
+      - uses: ros-tooling/action-ros-ci@0.3.5
+        with:
+          target-ros2-distro: ${{ matrix.distro }}
+          vcs-repo-file-url: ${{ inputs.vcs_url }}
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                    "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+                ]
+              }
+            }
+  build_on_noble:
+    name: build_jammy_${{ matrix.distro }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [rolling]
     steps:
       - uses: actions/checkout@v3
         with:
