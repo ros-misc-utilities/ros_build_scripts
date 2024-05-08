@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distro: [jazzy, rolling]
+        distro: [rolling]
     steps:
       - uses: actions/checkout@v3
         with:
