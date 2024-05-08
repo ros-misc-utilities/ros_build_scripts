@@ -13,7 +13,7 @@ on:
 jobs:
   build_on_noble:
     name: build_noble_${{ matrix.distro }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
