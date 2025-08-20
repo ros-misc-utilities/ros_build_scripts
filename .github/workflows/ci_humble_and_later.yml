@@ -1,0 +1,63 @@
+name: Build repo on ROS2 matrix
+
+on:
+  workflow_call:
+    inputs:
+      repo:
+        required: true
+        type: string
+      vcs_url:
+        required: false
+        type: string
+
+jobs:
+  build_on_jammy:
+    name: build_jammy_${{ matrix.distro }}
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [humble]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ros-tooling/setup-ros@0.7.14
+        with:
+          required-ros-distributions: ${{ matrix.distro }}
+      - uses: ros-tooling/action-ros-ci@0.3.11
+        with:
+          target-ros2-distro: ${{ matrix.distro }}
+          vcs-repo-file-url: ${{ inputs.vcs_url }}
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                    "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+                ]
+              }
+            }
+  build_on_noble:
+    name: build_noble_${{ matrix.distro }}
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:noble
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [jazzy, rolling]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ros-tooling/setup-ros@0.7.14
+        with:
+          required-ros-distributions: ${{ matrix.distro }}
+      - uses: ros-tooling/action-ros-ci@0.4.4
+        with:
+          target-ros2-distro: ${{ matrix.distro }}
+          vcs-repo-file-url: ${{ inputs.vcs_url }}
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                    "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+                ]
+              }
+            }
