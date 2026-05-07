@@ -76,7 +76,7 @@ jobs:
         with:
           use-ros2-testing: true
           required-ros-distributions: ${{ matrix.distro }}
-      - uses: ros-tooling/action-ros-ci@lyrical
+      - uses: ros-tooling/action-ros-ci@main
         with:
           target-ros2-distro: ${{ matrix.distro }}
           vcs-repo-file-url: ${{ inputs.vcs_url }}
