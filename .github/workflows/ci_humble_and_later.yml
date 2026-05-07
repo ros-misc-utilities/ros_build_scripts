@@ -37,19 +37,45 @@ jobs:
             }
   build_on_noble:
     name: build_noble_${{ matrix.distro }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:noble
     strategy:
       fail-fast: false
       matrix:
-        distro: [jazzy, kilted, rolling]
+        distro: [jazzy, kilted]
     steps:
       - uses: actions/checkout@v4
-      - uses: ros-tooling/setup-ros@0.7.14
+      - uses: ros-tooling/setup-ros@0.7.15
         with:
           required-ros-distributions: ${{ matrix.distro }}
-      - uses: ros-tooling/action-ros-ci@0.4.4
+      - uses: ros-tooling/action-ros-ci@0.4.6
+        with:
+          target-ros2-distro: ${{ matrix.distro }}
+          vcs-repo-file-url: ${{ inputs.vcs_url }}
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                    "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+                ]
+              }
+            }
+  build_on_resolute:
+    name: build_resolute_${{ matrix.distro }}
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:resolute
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [lyrical, rolling]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ros-tooling/setup-ros@0.7.15
+        with:
+          required-ros-distributions: ${{ matrix.distro }}
+      - uses: ros-tooling/action-ros-ci@0.4.6
         with:
           target-ros2-distro: ${{ matrix.distro }}
           vcs-repo-file-url: ${{ inputs.vcs_url }}
